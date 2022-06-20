@@ -22,3 +22,11 @@ export function logout() {
     method: 'get'
   })
 }
+
+export function ChangePwd(data) {
+  return request({
+    url: '/admin/changepwd',
+    method: 'post',
+    data
+  })
+}

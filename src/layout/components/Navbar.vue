@@ -1,6 +1,11 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-container"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
@@ -35,12 +40,40 @@
           <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
             <el-dropdown-item>Docs</el-dropdown-item>
           </a>
+          <el-dropdown-item divided @click.native="changePwd">
+            <span style="display:block;">修改密码</span>
+          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="temp.username" />
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="temp.password" show-password />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          Cancel
+        </el-button>
+        <el-button type="primary" @click="handleChangePwd()">
+          Confirm
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -51,7 +84,7 @@ import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
+import { ChangePwd } from '@/api/user'
 
 export default {
   components: {
@@ -59,8 +92,19 @@ export default {
     Hamburger,
     ErrorLog,
     Screenfull,
-    SizeSelect,
-    Search
+    SizeSelect
+  },
+  data() {
+    return {
+      temp: {
+        username: this.$store.getters.name,
+        password: undefined
+      },
+      'dialogFormVisible': false,
+      rules: {
+        password: [{ required: true, message: 'password is required', trigger: 'blur' }]
+      }
+    }
   },
   computed: {
     ...mapGetters([
@@ -76,6 +120,24 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    changePwd() {
+      this.dialogFormVisible = !this.dialogFormVisible
+    },
+    handleChangePwd() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          ChangePwd(this.temp).then(() => {
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: '修改密码成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
     }
   }
 }
@@ -87,7 +149,7 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 
   .hamburger-container {
     line-height: 46px;
@@ -95,7 +157,7 @@ export default {
     float: left;
     cursor: pointer;
     transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
       background: rgba(0, 0, 0, .025)
