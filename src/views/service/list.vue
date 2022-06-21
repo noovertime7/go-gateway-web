@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import { serviceList } from '@/api/service'
+import { serviceList, serviceDelete } from '@/api/service'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -160,7 +160,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 0.05 * 1000)
       })
     },
     handleFilter() {
@@ -169,13 +169,31 @@ export default {
     },
 
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const deleteQuery = {
+          'id': row.id
+        }
+        serviceDelete(deleteQuery).then((response) => {
+          this.getList()
+          this.$notify({
+            title: 'Success',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      }).catch(() => {
+        this.$notify({
+          title: 'Success',
+          message: '取消删除',
+          type: 'success',
+          duration: 2000
+        })
       })
-      this.list.splice(index, 1)
     },
     rtClass: function(key) {
       const sort = this.listQuery.sort
