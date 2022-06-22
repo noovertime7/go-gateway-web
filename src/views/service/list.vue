@@ -17,15 +17,17 @@
       >
         Search
       </el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-      >
-        Add
-      </el-button>
+      <router-link :to="'/service/service_create_http'">
+        <el-button
+          class="filter-item"
+          style="margin-left: 10px"
+          type="primary"
+          icon="el-icon-edit"
+          @click="handleCreate"
+        >
+          Add
+        </el-button>
+      </router-link>
     </div>
 
     <el-table
@@ -85,9 +87,11 @@
       >
         <template slot-scope="{ row, $index }">
           <el-button type="primary" size="mini"> 统计 </el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            修改
-          </el-button>
+          <router-link :to="'/service/service_edit_http'">
+            <el-button type="primary" size="mini" @click="handleUpdate(row)">
+              修改
+            </el-button>
+          </router-link>
           <el-button
             size="mini"
             type="danger"
