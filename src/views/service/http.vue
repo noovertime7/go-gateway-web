@@ -14,52 +14,77 @@
               <el-input v-model="form.service_desc" placeholder="最多255字符必填" />
             </el-form-item>
             <el-form-item label="接入类型">
-              <el-input v-model="form.service_name" placeholder="路径格式: /user/,域名格式: www.test.com" class="input-with-select">
-                <el-select slot="prepend" v-model="form.rule_type" placeholder="请选择">
-                  <el-option label="路径" value="0" />
-                  <el-option label="域名" value="1" />
+              <el-input v-model="form.rule" placeholder="路径格式: /user/,域名格式: www.test.com" class="input-with-select">
+                <el-select slot="prepend" v-model="form.rule_type" placeholder="请选择" style="width: 80px">
+                  <el-option label="路径" :value="0" />
+                  <el-option label="域名" :value="1" />
                 </el-select>
                 <el-button slot="append" icon="el-icon-search" />
               </el-input>
             </el-form-item>
-            <el-form-item label="服务描述">
-              <el-select v-model="form.service_desc" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai" />
-                <el-option label="区域二" value="beijing" />
-              </el-select>
+            <el-form-item label="支持Https">
+              <el-switch
+                v-model="form.need_https"
+              />
+              &ensp;&ensp;&ensp;&ensp;
+              <span style="color: #606266;font-weight: 700;">&ensp;&ensp;&ensp;&ensp;支持Strip_uri&nbsp; &ensp;&ensp;&ensp;&ensp;</span>
+              <el-switch
+                v-model="form.need_strip_uri"
+              />
+              <span style="color: #606266;font-weight: 700;">&ensp;&ensp;&ensp;&ensp;支持websocket&ensp;&ensp;&ensp;&ensp;</span>
+                &ensp;&ensp;&ensp;&ensp;
+              <el-switch
+                v-model="form.need_websocket"
+              />
             </el-form-item>
-            <el-form-item label="活动时间">
-              <el-col :span="11">
-                <el-date-picker v-model="form.date1" type="date" placeholder="选择日期" style="width: 100%;" />
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-time-picker v-model="form.date2" placeholder="选择时间" style="width: 100%;" />
-              </el-col>
+            <el-form-item label="URL重写">
+              <el-input v-model="form.url_rewrite" type="textarea" autosize placeholder="格式: ^/gateway/test_service(.*) $1 多条换行" />
             </el-form-item>
-            <el-form-item label="即时配送">
-              <el-switch v-model="form.delivery" />
+            <el-form-item label="Hearder头转换">
+              <el-input v-model="form.header_transfor" type="textarea" autosize placeholder="格式: add HeaderName HeaderValue Header转换支持 add(增加)/del(删除)/edit(修改) " />
             </el-form-item>
-            <el-form-item label="活动性质">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox label="美食/餐厅线上活动" name="type" />
-                <el-checkbox label="地推活动" name="type" />
-                <el-checkbox label="线下主题活动" name="type" />
-                <el-checkbox label="单纯品牌曝光" name="type" />
-              </el-checkbox-group>
+            <el-form-item label="开启验证">
+              <el-switch
+                v-model="form.open_auth"
+              />
             </el-form-item>
-            <el-form-item label="特殊资源">
-              <el-radio-group v-model="form.resource">
-                <el-radio label="线上品牌商赞助" />
-                <el-radio label="线下场地免费" />
+            <el-form-item label="IP白名单">
+              <el-input v-model="form.white_list" type="textarea" autosize placeholder="格式: 127.0.0.1 多条换行 白名单优先于黑名单" />
+            </el-form-item>
+            <el-form-item label="IP黑名单">
+              <el-input v-model="form.black_list" type="textarea" autosize placeholder="格式: 127.0.0.1 多条换行 白名单优先于黑名单" />
+            </el-form-item>
+            <el-form-item label="客户端限流">
+              <el-input v-model="form.clientip_flow_limit" placeholder="0表示无限制" />
+            </el-form-item>
+            <el-form-item label="服务端限流">
+              <el-input v-model="form.service_flow_limit" placeholder="0表示无限制" />
+            </el-form-item>
+            <el-form-item label="轮询方式">
+              <el-radio-group v-model="form.round_type">
+                <el-radio :label="0">random</el-radio>
+                <el-radio :label="1">rand-robin</el-radio>
+                <el-radio :label="2">weight_rand-robin</el-radio>
+                <el-radio :label="0">ip_hash</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="活动形式">
-              <el-input v-model="form.desc" type="textarea" />
+            <el-form-item label="IP列表">
+              <el-input v-model="form.ip_list" type="textarea" autosize placeholder="格式: 127.0.0.1:80 多条换行" />
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">立即创建</el-button>
-              <el-button>取消</el-button>
+            <el-form-item label="权重列表">
+              <el-input v-model="form.weight_list" type="textarea" autosize placeholder="格式: 127.0.0.1:80 50 多条换行" />
+            </el-form-item>
+            <el-form-item label="建立连接超时">
+              <el-input v-model="form.upstream_connect_timeout" placeholder="单位s,0表示无限制" />
+            </el-form-item>
+            <el-form-item label="获取Header超时">
+              <el-input v-model="form.upstream_header_timeout" placeholder="单位s,0表示无限制" />
+            </el-form-item>
+            <el-form-item label="链接最大空闲时间">
+              <el-input v-model="form.upstream_idle_timeout" placeholder="单位s,0表示无限制" />
+            </el-form-item>
+            <el-form-item label="最大空闲连接数">
+              <el-input v-model="form.upstream_max_idle" placeholder="单位s,0表示无限制" />
             </el-form-item>
           </el-form>
         </div>
@@ -78,14 +103,27 @@ export default {
   data() {
     return {
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        service_name: '',
+        service_desc: '',
+        rule_type: 0,
+        rule: '',
+        need_https: false,
+        need_strip_uri: true,
+        need_websocket: false,
+        url_rewrite: '',
+        header_transfor: '',
+        round_type: undefined,
+        ip_list: '',
+        weight_list: '',
+        upstream_connect_timeout: undefined,
+        upstream_header_timeout: undefined,
+        upstream_idle_timeout: undefined,
+        upstream_max_idle: undefined,
+        open_auth: false,
+        white_list: '',
+        black_list: '',
+        clientip_flow_limit: undefined,
+        service_flow_limit: undefined
       }
     }
   },
