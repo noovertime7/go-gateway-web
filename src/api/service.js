@@ -15,3 +15,27 @@ export function serviceDelete(query) {
     params: query
   })
 }
+
+export function serviceAddHttp(data) {
+  return request({
+    url: '/service/service_add',
+    method: 'post',
+    data
+  })
+}
+
+export function serviceUpdateHttp(data) {
+  return request({
+    url: '/service/service_update',
+    method: 'post',
+    data
+  })
+}
+
+export function serviceDetail(query) {
+  return request({
+    url: '/service/service_detail',
+    method: 'get',
+    params: query
+  })
+}

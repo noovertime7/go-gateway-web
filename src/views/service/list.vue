@@ -23,9 +23,24 @@
           style="margin-left: 10px"
           type="primary"
           icon="el-icon-edit"
-          @click="handleCreate"
         >
-          Add
+          添加HTTP服务
+        </el-button>
+        <el-button
+          class="filter-item"
+          style="margin-left: 10px"
+          type="primary"
+          icon="el-icon-edit"
+        >
+          添加TCP服务
+        </el-button>
+        <el-button
+          class="filter-item"
+          style="margin-left: 10px"
+          type="primary"
+          icon="el-icon-edit"
+        >
+          添加GRPC服务
         </el-button>
       </router-link>
     </div>
@@ -82,16 +97,17 @@
       <el-table-column
         label="操作"
         align="center"
-        width="230"
+        width="260"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row, $index }">
-          <el-button type="primary" size="mini"> 统计 </el-button>
-          <router-link :to="'/service/service_edit_http'">
-            <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini"> 统计 </el-button>&ensp;&ensp;
+          <router-link :to="'/service/service_edit_http/' + row.id">
+            <el-button type="primary" size="mini">
               修改
             </el-button>
           </router-link>
+          &ensp;&ensp;
           <el-button
             size="mini"
             type="danger"
