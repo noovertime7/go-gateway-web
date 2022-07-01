@@ -108,7 +108,101 @@ export const constantRoutes = [
         name: '服务统计',
         meta: { title: '服务统计', icon: 'component', affix: false },
         hidden: true
+      },
+      {
+        path: 'service_create_tcp',
+        component: () => import('@/views/service/tcp'),
+        name: '创建TCP服务',
+        meta: {
+          title: '创建TCP服务',
+          icon: 'component',
+          affix: false
+        },
+        hidden: true
+      },
+      {
+        path: 'service_edit_tcp/:id(\\d+)',
+        component: () => import('@/views/service/tcp'),
+        name: '修改TCP服务',
+        meta: {
+          title: '修改TCP服务',
+          icon: 'component',
+          affix: false
+        },
+        hidden: true
+      },
+      {
+        path: 'service_create_grpc',
+        component: () => import('@/views/service/grpc'),
+        name: '创建GRPC服务',
+        meta: {
+          title: '创建GRPC服务',
+          icon: 'component',
+          affix: false
+        },
+        hidden: true
+      },
+      {
+        path: 'service_edit_grpc/:id(\\d+)',
+        component: () => import('@/views/service/grpc'),
+        name: '修改GRPC服务',
+        meta: {
+          title: '修改GRPC服务',
+          icon: 'component',
+          affix: false
+        },
+        hidden: true
       }
+    ]
+  },
+  {
+    path: '/app',
+    redirect: '/app/app_list',
+    component: Layout,
+    name: '租户管理',
+    meta: {
+      title: '租户管理',
+      icon: 'user'
+    },
+    children: [{
+      path: 'app_list',
+      component: () => import('@/views/app/app_list'),
+      name: '租户列表',
+      meta: {
+        title: '租户列表',
+        icon: 'user',
+        affix: false
+      }
+    },
+    {
+      path: 'app_create',
+      component: () => import('@/views/app/app'),
+      name: 'CreateApp',
+      meta: {
+        title: '创建租户',
+        icon: 'edit'
+      },
+      hidden: true
+    },
+    {
+      path: 'app_edit/:id(\\d+)',
+      component: () => import('@/views/app/app'),
+      name: 'EditApp',
+      meta: {
+        title: '修改租户'
+      },
+      hidden: true
+    },
+    {
+      path: 'app_stat/:id(\\d+)',
+      component: () => import('@/views/app/stat'),
+      name: 'AppStat',
+      meta: {
+        title: '租户流量统计',
+        noCache: true
+      },
+      hidden: true
+    }
     ]
   }
 ]

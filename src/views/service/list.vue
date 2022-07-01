@@ -26,6 +26,8 @@
         >
           添加HTTP服务
         </el-button>
+      </router-link>
+      <router-link :to="'/service/service_create_tcp'">
         <el-button
           class="filter-item"
           style="margin-left: 10px"
@@ -34,6 +36,8 @@
         >
           添加TCP服务
         </el-button>
+      </router-link>
+      <router-link :to="'/service/service_create_grpc'">
         <el-button
           class="filter-item"
           style="margin-left: 10px"
@@ -104,9 +108,19 @@
           <router-link :to="'/service/service_stat/'+row.id">
             <el-button type="primary" size="mini"> 统计</el-button>&ensp;&ensp;
           </router-link>
-          <router-link :to="'/service/service_edit_http/' + row.id">
+          <router-link v-if="row.load_type===0" :to="'/service/service_edit_http/' + row.id">
             <el-button type="primary" size="mini">
-              修改
+              修改HTTP
+            </el-button>
+          </router-link>
+          <router-link v-if="row.load_type===1" :to="'/service/service_edit_tcp/' + row.id">
+            <el-button type="primary" size="mini">
+              修改TCP
+            </el-button>
+          </router-link>
+          <router-link v-if="row.load_type===2" :to="'/service/service_edit_grpc/' + row.id">
+            <el-button type="primary" size="mini">
+              修改GRPC
             </el-button>
           </router-link>
           &ensp;&ensp;
