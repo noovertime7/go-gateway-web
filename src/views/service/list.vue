@@ -101,7 +101,9 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row, $index }">
-          <el-button type="primary" size="mini"> 统计 </el-button>&ensp;&ensp;
+          <router-link :to="'/service/service_stat/'+row.id">
+            <el-button type="primary" size="mini"> 统计</el-button>&ensp;&ensp;
+          </router-link>
           <router-link :to="'/service/service_edit_http/' + row.id">
             <el-button type="primary" size="mini">
               修改

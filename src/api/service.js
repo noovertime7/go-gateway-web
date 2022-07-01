@@ -39,3 +39,12 @@ export function serviceDetail(query) {
     params: query
   })
 }
+
+// 获取流量统计接口
+export function serviceStat(query) {
+  return request({
+    url: '/service/service_stat',
+    method: 'get',
+    params: query
+  })
+}
